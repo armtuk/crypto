@@ -2,11 +2,13 @@ export interface SpaceDimension {
   min: number
   max: number
 }
+
 export interface SpaceAxis {
   labelStep: number
   tickerStep: number
   drawLineAt: "zero" | "min" | "max" | "none"
   dim: SpaceDimension
+  axisType: "number" | "date" | "discrete" | "epoch" | "epochMillis"
 }
 
 export interface ChartSpace2D {
@@ -14,40 +16,48 @@ export interface ChartSpace2D {
   y: SpaceAxis
 }
 
-export interface ChartPoint2D {
-  x: number
-  y: number
+export interface ChartPoint {
+  values: [number, number, ...number[]]
 }
 
-export interface ChartPoint3D extends ChartPoint2D {
-  x: number
-  y: number
-  z: number
-}
 
-export class ChartCandleStick implements ChartPoint2D {
+export class ChartCandleStick implements ChartPoint {
   constructor(
     public timestamp: number,
     public open: number,
     public close: number,
-    public high: number,
     public low: number,
+    public high: number,
     ) {}
 
-  get x(): number {
+  get values(): [number, number] {
+    return [this.x, this.y]
+  }
+
+  get y() {
     return (this.open + this.close) / 2
   }
 
-  get y(): number {
+  get x(): number {
     return this.timestamp
   }
 }
 
-export interface ChartPointData<T extends ChartPoint2D> {
+export interface ChartPointData<T extends ChartPoint> {
   data: T[]
 }
 
 export interface ChartLayer {
   name: string
   space: ChartSpace2D
+}
+
+export interface ChartSize2D {
+  width: number
+  height: number
+}
+
+export interface ChartScale {
+  x: number
+  y: number
 }

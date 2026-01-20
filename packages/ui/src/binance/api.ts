@@ -1,5 +1,5 @@
 import {APIProvider, Get} from "@alexrmturner/plexq-ts-api";
-import {conf} from "@/conf/application.conf.ts";
+import {conf} from "../conf/application.conf";
 
 export class BinanceApiProvider extends APIProvider {
   constructor() {
